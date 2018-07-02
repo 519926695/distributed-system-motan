@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:motan="http://api.weibo.com/schema/motan"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+   			http://api.weibo.com/schema/motan http://api.weibo.com/schema/motan.xsd
+   			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+   			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd
+   			http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd  ">
+            
+    <context:component-scan base-package="io.lzz.client"/>
+     <!-- 定时任务的注解配置 -->
+	<task:annotation-driven scheduler="myScheduler" />
+	<task:scheduler id="myScheduler" pool-size="2"/>
+            
+	<bean id="contextListener" class="io.lzz.common.spring.SpringApplicationListener"/>
+</beans>

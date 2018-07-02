@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="ec-station" default="zip_all" basedir=".">
+	<description>
+        simple example build file 
+    </description>
+	<property name="app" value="ec-station" />
+	<property name="dist" location="target" />
+	
+	
+	<target name="makedir">
+		<echo message="mkdir ${dist}/zip/${app}" />
+		<mkdir dir="${dist}/zip/${app}" />
+	</target>
+	<target name="dist" depends="zip_clear" description="dist">
+		<copy todir="${dist}/zip/${app}">
+			<fileset dir="${dist}/${app}" />
+		</copy>
+	</target>
+	<target name="clean" description="clean up">
+		<!-- Delete ${dist}/zip directory trees -->
+		<delete dir="${dist}/zip" />
+	</target>
+
+	<target name="zip_clear" depends="clean,makedir">
+		<echo message="##########copy META-INF to dist!" />
+		<copy todir="${dist}/zip/${app}">
+			<fileset dir="${dist}/${app}">
+				<!-- 
+				<exclude name="**/*.jar" />
+				<exclude name="**/*.jsp" />
+				<exclude name="**/*.sql" />    
+				<exclude name="**/*.xml"/>
+				
+				<exclude name="**/*.properties"/>-->
+			</fileset>
+		</copy>
+	</target>
+	<target name="zip_all" depends="zip_clear">
+		<zip destfile="${dist}/zip/${app}.zip" basedir="${dist}/zip">
+			<include name="**/*.class" />
+			<include name="**/ec-*.jar" />
+			<include name="**/*.xml" />
+			<include name="**/*.properties" />
+			<include name="**/release/*" />
+			<include name="**/html/emreset.html" />
+			<include name="**/redis.properties" />
+			<include name="**/motan-loadbalanc*.jar" />
+			<!--
+			
+			<include name="**/*.class" />
+			<include name="**/ec-*.jar" />
+			<include name="**/*.xml" />
+			<include name="**/*.properties" />
+			<include name="**/release/*" />
+			<include name="**/html/emreset.html" />
+			<include name="**/redis.properties" />
+			
+			<include name="**/*.class" />
+			<include name="**/ec-*.jar" />
+			<include name="**/*.xml" />
+			<include name="**/*.properties" />
+			<include name="**/basic*.jar" />
+			<include name="**/gson-*.jar" />
+			
+			
+			<include name="**/*.class" />
+			<include name="**/ec-*.jar" />
+			<include name="**/motan_service.xml" />
+			<include name="**/config.properties" />
+			<include name="**/mq.properties" />
+			
+			<include name="**/*.class" />
+			<include name="**/ec-*.jar" />
+			
+			
+			<include name="**/*.class" />
+			<include name="**/payway/**/*.jsp" />
+			
+			<exclude name="**/*.jar" />
+			<exclude name="**/*.properties"/>
+			<exclude name="**/*.xml"/>
+			
+			
+			<include name="**/*.class" />
+			<include name="**/weixin/*.jsp" />
+			
+			<exclude name="**/*.jar" />
+			<exclude name="**/*.properties"/>
+			<include name="**/*.class" />
+			-->
+		</zip>
+	</target>
+</project>
+
+
+

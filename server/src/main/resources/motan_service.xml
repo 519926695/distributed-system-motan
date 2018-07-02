@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:motan="http://api.weibo.com/schema/motan"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+   			http://api.weibo.com/schema/motan http://api.weibo.com/schema/motan.xsd
+   			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+   			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd
+   			http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd  ">
+	<!-- 定时任务调度器 -->
+	<task:executor id="pools" keep-alive="1000" queue-capacity="100" pool-size="5"/>
+	<task:annotation-driven/>
+	<bean id="contextListener" class="io.lzz.common.spring.SpringApplicationListener"/>
+	
+	<!-- 多个包之间采用","分隔 -->
+	<context:component-scan base-package="io.lzz.uc,io.lzz.uc"/>
+	
+	<!-- 配置注册中心，客户端与服务端使用相同的配置中心 -->
+	<motan:registry regProtocol="zookeeper" name="server_zookeeper" address="127.0.0.1:2181"/>
+	
+	<!-- 启用Spring对基于@AspectJ aspects的配置支持 -->    
+   <!-- 激活自动代理功能 -->  
+    <aop:aspectj-autoproxy proxy-target-class="true"/>  
+    
+    <bean id="aspectJ" class="io.lzz.uc.config.AspectJAdvice"></bean>
+	
+    <!-- 协议配置。为防止多个业务配置冲突，推荐使用id表示具体协议。serialization="kryo" codec="colf"-->
+    <motan:protocol id="server_protocol" default="false" name="motan" codec="proto-codec" 
+                    requestTimeout="10000" maxServerConnection="80000" maxContentLength="2048576"
+                    maxWorkerThread="300" minWorkerThread="20" />
+	
+    <!-- 通用配置，多个rpc服务使用相同的基础配置. group和module定义具体的服务池。export格式为“protocol id:提供服务的端口”-->
+    <motan:basicService requestTimeout="10000" export="server_protocol:12003" 
+                        group="uc-dev-local" module="uc" accessLog="false" shareChannel="true"
+                        id="serviceBasicConfig" filter="cat" />
+    
+    <!-- 配置service实现类 -->
+	<bean id="userInfoImpl" class="io.lzz.uc.facadeimpl.UserInfoServiceImpl"/>
+    <!-- 具体rpc服务配置，声明实现的接口类。需要根据业务情况设置合适的超时时间 -->
+    <motan:service interface="io.lzz.rpc.uc.api.IUserInfoService"
+    	 ref="userInfoImpl"   basicService="serviceBasicConfig" 
+                  registry="server_zookeeper" requestTimeout="2000">
+    </motan:service>
+
+</beans>

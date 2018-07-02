@@ -1,0 +1,109 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.lzz</groupId>
+  <artifactId>rpc</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  
+  <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>4.3.7.RELEASE</spring.version>
+		<motan.version>0.3.0</motan.version>
+  </properties>
+  
+  <dependencies>
+  	<dependency>
+	  <groupId>io.lzz</groupId>
+	  <artifactId>common</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+	  	<groupId>io.lzz</groupId>
+	  	<artifactId>motan-loadbalance-ext</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+ 	</dependency>
+	<!-- motan -->
+	<dependency>
+		<groupId>com.weibo</groupId>
+		<artifactId>motan-core</artifactId>
+		<version>${motan.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.weibo</groupId>
+	    <artifactId>motan-registry-zookeeper</artifactId>
+		<version>${motan.version}</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.weibo</groupId>
+	    <artifactId>motan-springsupport</artifactId>
+	    <version>${motan.version}</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.weibo</groupId>
+	    <artifactId>motan-transport-netty</artifactId>
+	    <version>${motan.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.12</version>
+		<scope>test</scope>
+	</dependency>
+  </dependencies>	
+  <!-- 配置部署的远程仓库 -->
+ <distributionManagement>
+	<snapshotRepository>
+		<id>nexus-snapshots</id>
+		<name>nexus distribution snapshot repository</name>
+		<url>http://maven.batcloud.cn/nexus/content/repositories/snapshots/</url>
+	</snapshotRepository>
+	<repository>
+		<id>nexus-releases</id>
+		<name>Nexus Release Repository</name>
+		<url>http://maven.batcloud.cn/nexus/content/repositories/releases/</url>
+	</repository>
+ </distributionManagement>
+ 
+ <build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					 <source>1.7</source>
+	                  <target>1.7</target>
+	                  <encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<classesDirectory>target/classes/</classesDirectory>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+					<excludes>
+						<exclude>**/*.properties</exclude>
+						<exclude>**/*motan*.xml</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+		
+	</build>
+</project>

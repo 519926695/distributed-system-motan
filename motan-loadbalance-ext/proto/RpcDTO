@@ -1,0 +1,28 @@
+syntax="proto3";
+
+option java_package="motan.dto";
+
+message Request {
+
+	string interfaceName = 1;
+	
+	string methodName = 2;
+
+	string paramtersDesc = 3;
+	
+	repeated bytes arguments = 4;
+	
+	repeated attachment attachments = 5;
+	
+	message attachment{
+		string key = 1;
+		string value = 2;
+	}
+}
+
+message Response{
+	int64 processTime = 1;
+	string className = 2;
+	
+	bytes data = 4;
+}

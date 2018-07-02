@@ -1,0 +1,28 @@
+package colf
+
+
+type Request struct {
+
+	interfaceName text
+	
+	methodName text
+
+	paramtersDesc text
+	
+	arguments []binary 
+	
+	attachments []Attachment 
+}
+
+type Attachment struct {
+	key  text
+	value text
+}
+
+
+type Response struct {
+ 	processTime int64
+ 	className text
+	
+	data binary
+}

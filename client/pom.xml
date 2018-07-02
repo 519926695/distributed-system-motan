@@ -1,0 +1,147 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.lzz</groupId>
+  <artifactId>client</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  
+  <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <dependencies>
+  	<dependency>
+	  <groupId>io.lzz</groupId>
+	  <artifactId>common</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+	  <groupId>io.lzz</groupId>
+	  <artifactId>rpc</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+			<groupId>com.jfinal</groupId>
+			<artifactId>jfinal</artifactId>
+			<version>1.9</version>
+	</dependency>
+	<!-- 文件上传 -->
+	<dependency>
+		    <groupId>com.jfinal</groupId>
+		    <artifactId>cos</artifactId>
+		    <version>26Dec2008</version>
+		</dependency>
+	<dependency>
+	  <groupId>javax.servlet</groupId>
+	  <artifactId>servlet-api</artifactId>
+	  <version>2.5</version>
+	</dependency>
+	<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+  </dependencies>
+  <!-- 配置部署的远程仓库 -->
+ <distributionManagement>
+ </distributionManagement>
+ 
+ <build>
+ 		<finalName>${project.artifactId}</finalName>
+		<defaultGoal>package</defaultGoal>
+		<plugins>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					 <source>1.7</source>
+	                  <target>1.7</target>
+	                  <encoding>UTF-8</encoding>
+	                  <compilerArguments>
+		                   <extdirs>src\main\webapp\WEB-INF\lib</extdirs>
+		              </compilerArguments>
+				</configuration>
+			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<artifactId>maven-jar-plugin</artifactId> -->
+<!-- 				<configuration> -->
+<!-- 					<classesDirectory>target/classes/</classesDirectory> -->
+<!-- 					<archive> -->
+<!-- 						<addMavenDescriptor>false</addMavenDescriptor> -->
+<!-- 					</archive> -->
+<!-- 					<excludes> -->
+<!-- 						<exclude>**/*.xml</exclude>  -->
+<!-- 						<exclude>**/*.properties</exclude> -->
+<!-- 						<exclude>**/*.dat</exclude> -->
+<!-- 					</excludes> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
+			<!-- war插件, 设定war名称不带版本号 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<warName>${project.artifactId}</warName>
+					<packagingExcludes>WEB-INF/lib/jetty-*.jar</packagingExcludes>
+					<packagingExcludes>WEB-INF/lib/jsp-api*.jar</packagingExcludes> 
+					<packagingExcludes>WEB-INF/lib/servlet-api*.jar</packagingExcludes>
+					<packagingIncludes>WEB-INF/lib/*.jar</packagingIncludes>
+
+				</configuration>
+			</plugin>
+			<!-- ant插件 -->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install</id>
+						<phase>install</phase>
+						<configuration>
+							<tasks>
+								<ant antfile="${basedir}/build.xml">
+								</ant>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>clean</id>
+						<phase>clean</phase>
+						<configuration>
+							<tasks>
+							</tasks>
+							<!--<target>
+								<ant antfile="${basedir}/build.xml">
+									<target name="zip_clear" />
+								</ant>
+							</target>-->
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		
+	</build>
+</project>
